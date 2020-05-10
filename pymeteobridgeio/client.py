@@ -34,7 +34,7 @@ class Meteobridge:
         self._host = Host
         self._user = User
         self._pass = Pass
-        self._unit_system = unit_system
+        self._unit_system = unit_system.lower()
         self.sensor_data = {}
 
         self.req = session
@@ -183,7 +183,7 @@ class Conversion:
     """
 
     def temperature(self, value, unit):
-        if unit.lower() == "imperial":
+        if unit == "imperial":
             # Return value F
             return round((value * 9 / 5) + 32, 1)
         else:
@@ -191,7 +191,7 @@ class Conversion:
             return round(value, 1)
 
     def volume(self, value, unit):
-        if unit.lower() == "imperial":
+        if unit == "imperial":
             # Return value in
             return round(value * 0.0393700787, 2)
         else:
@@ -199,7 +199,7 @@ class Conversion:
             return round(value, 1)
 
     def rate(self, value, unit):
-        if unit.lower() == "imperial":
+        if unit == "imperial":
             # Return value in
             return round(value * 0.0393700787, 2)
         else:
@@ -207,7 +207,7 @@ class Conversion:
             return round(value, 2)
 
     def pressure(self, value, unit):
-        if unit.lower() == "imperial":
+        if unit == "imperial":
             # Return value inHg
             return round(value * 0.0295299801647, 3)
         else:
@@ -215,15 +215,18 @@ class Conversion:
             return round(value, 1)
 
     def speed(self, value, unit):
-        if unit.lower() == "imperial":
+        if unit == "imperial":
             # Return value in mi/h
             return round(value * 2.2369362921, 1)
+        elif unit == "uk":
+            # Return value in km/h
+            return round(value * 3.6, 1)
         else:
             # Return value in m/s
             return round(value, 1)
 
     def distance(self, value, unit):
-        if unit.lower() == "imperial":
+        if unit == "imperial":
             # Return value in mi
             return round(value * 0.621371192, 1)
         else:
@@ -232,7 +235,7 @@ class Conversion:
 
     def feels_like(self, temp, heatindex, windchill, unit):
         """ Return Feels Like Temp."""
-        if unit.lower() == "imperial":
+        if unit == "imperial":
             high_temp = 80
             low_temp = 50
         else:
