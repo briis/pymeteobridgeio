@@ -44,6 +44,34 @@ class Meteobridge:
         await self._get_sensor_data()
         return self.sensor_data
 
+    async def get_server_data(self) -> None:
+        """Returns Meteobridge Server Data."""
+
+        data_template = "[mbsystem-mac:None];[mbsystem-swversion:0.0]-[mbsystem-buildnum:0];[mbsystem-platform:None];[mbsystem-station:None]"
+        endpoint = f"http://{self._user}:{self._pass}@{self._host}/cgi-bin/template.cgi?template={data_template}"
+
+        async with self.req.get(endpoint,) as response:
+            if response.status == 200:
+                content = await response.read()
+                decoded_content = content.decode("utf-8")
+
+                cr = csv.reader(decoded_content.splitlines(), delimiter=";")
+                rows = list(cr)
+                cnv = Conversion()
+                for values in rows:
+                    item = {
+                        "mac_address": values[0],
+                        "swversion": values[1],
+                        "platform_hw": values[2],
+                        "station_hw": values[3],
+                    }
+                return item
+
+            else:
+                raise UnexpectedError(
+                    f"Fetching Meteobridge data failed: {response.status} - Reason: {response.reason}"
+                )
+
     async def _get_sensor_data(self) -> None:
         """Gets the sensor data from the Meteobridge Logger"""
 

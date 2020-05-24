@@ -2,7 +2,7 @@ from distutils.core import setup
 setup(
   name = 'pymeteobridgeio',
   packages = ['pymeteobridgeio'],
-  version = '0.4',
+  version = '0.5',
   license='MIT',
   description = 'Python Wrapper for Meteobridge Data Logger', 
   author = 'Bjarne Riis',
