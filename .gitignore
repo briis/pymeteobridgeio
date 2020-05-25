@@ -129,3 +129,5 @@ dmypy.json
 .pyre/
 pymeteobridgeio.code-workspace
 test.py
+user_data.txt
+.DS_Store
