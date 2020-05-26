@@ -2,6 +2,17 @@
 
 from pymeteobridgeio.const import (
     UNIT_SYSTEM_IMPERIAL,
+    UNIT_TYPE_DIST_KM,
+    UNIT_TYPE_DIST_MI,
+    UNIT_TYPE_PRESSURE_HPA,
+    UNIT_TYPE_PRESSURE_INHG,
+    UNIT_TYPE_RAIN_MM,
+    UNIT_TYPE_RAIN_IN,
+    UNIT_TYPE_TEMP_CELCIUS,
+    UNIT_TYPE_TEMP_FAHRENHEIT,
+    UNIT_TYPE_WIND_KMH,
+    UNIT_TYPE_WIND_MS,
+    UNIT_TYPE_WIND_MPH,
 )
 
 class Conversion:
@@ -105,3 +116,35 @@ class Conversion:
         ]
         direction = direction_array[int((bearing + 11.25) / 22.5)]
         return direction
+
+class Units:
+    """Returns the correct Display Unit for the current 
+       Unit System and type of Sensor."""
+
+    def temperature(self, unit_system):
+        """Return units for Temperature sensor."""
+        if unit_system == UNIT_SYSTEM_IMPERIAL:
+            return UNIT_TYPE_TEMP_FAHRENHEIT
+        else:
+            return UNIT_TYPE_TEMP_CELCIUS
+
+    def rain(self, unit_system, rainrate = False):
+        """Return units for Rain sensor."""
+        if unit_system == UNIT_SYSTEM_IMPERIAL:
+            return UNIT_TYPE_RAIN_IN if not rainrate else f"{UNIT_TYPE_RAIN_IN}/h"
+        else:
+            return UNIT_TYPE_RAIN_MM if not rainrate else f"{UNIT_TYPE_RAIN_MM}/h"
+
+    def wind(self, unit_system):
+        """Return units for Wind sensor."""
+        if unit_system == UNIT_SYSTEM_IMPERIAL:
+            return UNIT_TYPE_WIND_MPH
+        else:
+            return UNIT_TYPE_WIND_MS
+
+    def pressure(self, unit_system):
+        """Return units for Wind sensor."""
+        if unit_system == UNIT_SYSTEM_IMPERIAL:
+            return UNIT_TYPE_PRESSURE_INHG
+        else:
+            return UNIT_TYPE_PRESSURE_HPA
