@@ -1,6 +1,11 @@
 """ A Python Wrapper to communicate with a Meteobridge Data Logger."""
 from pymeteobridgeio.client import Meteobridge
-from pymeteobridgeio.errors import MeteoBridgeError
+from pymeteobridgeio.errors import (
+    MeteoBridgeError,
+    InvalidCredentials,
+    RequestError,
+    ResultError,
+)
 from pymeteobridgeio.const import (
     DEVICE_CLASS_NONE,
     DEVICE_CLASS_HUMIDITY,
