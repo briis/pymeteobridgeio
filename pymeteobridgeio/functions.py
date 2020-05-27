@@ -155,8 +155,8 @@ class HardwareTypes:
     def platform(self, value):
         """Converts the Platform Naming."""
         if value == "CARAMBOLA2":
-            return "PRO"
+            return "Meteobridge Pro"
         elif value == "VOCORE2":
-            return "NANO"
+            return "Meteobridge Nano"
         else:
             return value

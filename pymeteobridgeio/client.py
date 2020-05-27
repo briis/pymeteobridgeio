@@ -65,7 +65,7 @@ class Meteobridge:
 
     async def _meteobridge_server(self) -> None:
         """Returns Meteobridge Server Specific Information."""
-        data_template = "[mbsystem-mac:None];[mbsystem-swversion:0.0]-[mbsystem-buildnum:0];[mbsystem-platform:None];[mbsystem-station:None]"
+        data_template = "[mbsystem-mac:None];[mbsystem-swversion:0.0].[mbsystem-buildnum:0];[mbsystem-platform:None];[mbsystem-station:None];[mbsystem-wlanip:None];[mbsystem-lanip:None]"
         endpoint = f"http://{self._user}:{self._pass}@{self._host}/cgi-bin/template.cgi?template={data_template}"
         data = await self.async_request("get", endpoint)
         cr = csv.reader(data.splitlines(), delimiter=";")
@@ -79,6 +79,9 @@ class Meteobridge:
                 "swversion": values[1],
                 "platform_hw": hw_name.platform(values[2]),
                 "station_hw": values[3],
+                "wlan_ip": values[4],
+                "lan_ip": values[5],
+                "ip_address": values[5] if values[4] == "None" else values[4],
             }
         return item
 
