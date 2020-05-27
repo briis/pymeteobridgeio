@@ -33,7 +33,7 @@ from pymeteobridgeio.errors import (
     RequestError,
     ResultError,
 )
-from pymeteobridgeio.functions import Conversion, Units
+from pymeteobridgeio.functions import Conversion, Units, HardwareTypes
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -71,11 +71,13 @@ class Meteobridge:
         cr = csv.reader(data.splitlines(), delimiter=";")
         rows = list(cr)
 
+        hw_name = HardwareTypes()
+
         for values in rows:
             item = {
                 "mac_address": values[0],
                 "swversion": values[1],
-                "platform_hw": values[2],
+                "platform_hw": hw_name.platform(values[2]),
                 "station_hw": values[3],
             }
         return item

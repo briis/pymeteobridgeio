@@ -148,3 +148,15 @@ class Units:
             return UNIT_TYPE_PRESSURE_INHG
         else:
             return UNIT_TYPE_PRESSURE_HPA
+
+class HardwareTypes:
+    """Converts HW Names to readable names."""
+
+    def platform(self, value):
+        """Converts the Platform Naming."""
+        if value == "CARAMBOLA2":
+            return "PRO"
+        elif value == "VOCORE2":
+            return "NANO"
+        else:
+            return value
