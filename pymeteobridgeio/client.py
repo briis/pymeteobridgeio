@@ -271,7 +271,7 @@ class Meteobridge:
                     "icon": "thermometer",
                     "unit": sensor_unit.temperature(self._unit_system),
                     },
-                "tempmmin": {
+                "temp_month_min": {
                     "value": cnv.temperature(float(values[21]), self._unit_system),
                     "name": "Temp month min",
                     "type": DEVICE_TYPE_SENSOR,
@@ -279,7 +279,7 @@ class Meteobridge:
                     "icon": "thermometer",
                     "unit": sensor_unit.temperature(self._unit_system),
                     },
-                "tempmmax": {
+                "temp_month_max": {
                     "value": cnv.temperature(float(values[22]), self._unit_system),
                     "name": "Temp month max",
                     "type": DEVICE_TYPE_SENSOR,
@@ -287,7 +287,7 @@ class Meteobridge:
                     "icon": "thermometer",
                     "unit": sensor_unit.temperature(self._unit_system),
                     },
-                "tempymin": {
+                "temp_year_min": {
                     "value": cnv.temperature(float(values[23]), self._unit_system),
                     "name": "Temp year min",
                     "type": DEVICE_TYPE_SENSOR,
@@ -295,7 +295,7 @@ class Meteobridge:
                     "icon": "thermometer",
                     "unit": sensor_unit.temperature(self._unit_system),
                     },
-                "tempymax": {
+                "temp_year_max": {
                     "value": cnv.temperature(float(values[24]), self._unit_system),
                     "name": "Temp year max",
                     "type": DEVICE_TYPE_SENSOR,
@@ -303,7 +303,7 @@ class Meteobridge:
                     "icon": "thermometer",
                     "unit": sensor_unit.temperature(self._unit_system),
                     },
-                "windmmax": {
+                "wind_month_max": {
                     "value": cnv.speed(float(values[25]), self._unit_system),
                     "name": "Wind speed month max",
                     "type": DEVICE_TYPE_SENSOR,
@@ -311,7 +311,7 @@ class Meteobridge:
                     "icon": "weather-windy",
                     "unit": sensor_unit.wind(self._unit_system),
                     },
-                "windymax": {
+                "wind_year_max": {
                     "value": cnv.speed(float(values[26]), self._unit_system),
                     "name": "Wind speed year max",
                     "type": DEVICE_TYPE_SENSOR,
@@ -319,7 +319,7 @@ class Meteobridge:
                     "icon": "weather-windy",
                     "unit": sensor_unit.wind(self._unit_system),
                     },
-                "rainmmax": {
+                "rain_month_max": {
                     "value": cnv.volume(float(values[27]), self._unit_system),
                     "name": "Rain month total",
                     "type": DEVICE_TYPE_SENSOR,
@@ -327,7 +327,7 @@ class Meteobridge:
                     "icon": "weather-rainy",
                     "unit": sensor_unit.rain(self._unit_system),
                     },
-                "rainymax": {
+                "rain_year_max": {
                     "value": cnv.volume(float(values[28]), self._unit_system),
                     "name": "Rain year total",
                     "type": DEVICE_TYPE_SENSOR,
@@ -335,7 +335,7 @@ class Meteobridge:
                     "icon": "weather-rainy",
                     "unit": sensor_unit.rain(self._unit_system),
                     },
-                "rainratemmax": {
+                "rainrate_month_max": {
                     "value": cnv.volume(float(values[29]), self._unit_system),
                     "name": "Rain rate month max",
                     "type": DEVICE_TYPE_SENSOR,
@@ -343,7 +343,7 @@ class Meteobridge:
                     "icon": "weather-pouring",
                     "unit": sensor_unit.rain(self._unit_system, True),
                     },
-                "rainrateymax": {
+                "rainrate_year_max": {
                     "value": cnv.volume(float(values[30]), self._unit_system),
                     "name": "Rain rate year max",
                     "type": DEVICE_TYPE_SENSOR,
@@ -359,7 +359,7 @@ class Meteobridge:
                     "icon": "text-short",
                     "unit": None,
                     },
-                "isfreezing": {
+                "is_freezing": {
                     "value": True if float(self._outtemp) < 0 else False,
                     "name": "Is freezing",
                     "type": DEVICE_TYPE_BINARY_SENSOR,
@@ -367,7 +367,7 @@ class Meteobridge:
                     "icon": "thermometer-minus,thermometer-plus",
                     "unit": None,
                     },
-                "israining": {
+                "is_raining": {
                     "value": True if float(self._rainrate) > 0 else False,
                     "name": "Is raining",
                     "type": DEVICE_TYPE_BINARY_SENSOR,
@@ -375,7 +375,7 @@ class Meteobridge:
                     "icon": "water,water-off",
                     "unit": None,
                     },
-                "islowbat": {
+                "is_lowbat": {
                     "value": True if float(values[12]) > 0 else False,
                     "name": "Battery low",
                     "type": DEVICE_TYPE_BINARY_SENSOR,
