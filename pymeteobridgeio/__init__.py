@@ -7,6 +7,7 @@ from pymeteobridgeio.errors import (
 )
 from pymeteobridgeio.const import (
     DEVICE_CLASS_NONE,
+    DEVICE_CLASS_DISTANCE,
     DEVICE_CLASS_HUMIDITY,
     DEVICE_CLASS_PRESSURE,
     DEVICE_CLASS_RAIN,

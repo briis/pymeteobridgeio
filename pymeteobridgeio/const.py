@@ -5,6 +5,7 @@ BASE_URL = "https://swd.weatherflow.com/swd/rest/observations"
 DEFAULT_TIMEOUT = 10
 
 DEVICE_CLASS_NONE = "none"
+DEVICE_CLASS_DISTANCE = "distance"
 DEVICE_CLASS_HUMIDITY = "humidity"
 DEVICE_CLASS_PRESSURE = "pressure"
 DEVICE_CLASS_RAIN = "rain"

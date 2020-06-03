@@ -149,6 +149,13 @@ class Units:
         else:
             return UNIT_TYPE_PRESSURE_HPA
 
+    def distance(self, unit_system):
+        """Return units for Distance sensor."""
+        if unit_system == UNIT_SYSTEM_IMPERIAL:
+            return UNIT_TYPE_DIST_MI
+        else:
+            return UNIT_TYPE_DIST_KM
+
 class HardwareTypes:
     """Converts HW Names to readable names."""
 
