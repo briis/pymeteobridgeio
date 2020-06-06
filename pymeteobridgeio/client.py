@@ -97,6 +97,7 @@ class Meteobridge:
         rows = list(cr)
         cnv = Conversion()
         sensor_unit = Units()
+        sensor_item = {}
 
         for values in rows:
             self._outtemp = cnv.temperature(float(values[2]), self._unit_system)
