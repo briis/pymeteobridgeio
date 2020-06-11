@@ -17,6 +17,7 @@ from datetime import datetime
 from pymeteobridgeio.const import (
     DEFAULT_TIMEOUT,
     DEVICE_CLASS_NONE,
+    DEVICE_CLASS_COLD,
     DEVICE_CLASS_DISTANCE,
     DEVICE_CLASS_HUMIDITY,
     DEVICE_CLASS_PRESSURE,
@@ -89,7 +90,7 @@ class Meteobridge:
     async def _sensor_data(self) -> None:
         """Gets the sensor data from the Meteobridge Logger"""
 
-        dataTemplate = "[DD]/[MM]/[YYYY];[hh]:[mm]:[ss];[th0temp-act:0];[thb0seapress-act:0];[th0hum-act:0];[wind0avgwind-act:0];[wind0dir-avg5.0:0];[rain0total-daysum:0];[rain0rate-act:0];[th0dew-act:0];[wind0chill-act:0];[wind0wind-max1:0];[th0lowbat-act.0:0];[thb0temp-act:0];[thb0hum-act.0:0];[th0temp-dmax:0];[th0temp-dmin:0];[wind0wind-act:0];[th0heatindex-act.1:0];[uv0index-act:0];[sol0rad-act:0];[th0temp-mmin.1:0];[th0temp-mmax.1:0];[th0temp-ymin.1:0];[th0temp-ymax.1:0];[wind0wind-mmax.1:0];[wind0wind-ymax.1:0];[rain0total-mmax.1:0];[rain0total-ymax.1:0];[rain0rate-mmax.1:0];[rain0rate-ymax.1:0];[lgt0total-act.0:0];[lgt0energy-act.0:0];[lgt0dist-act.0:0];[forecast-text:]"
+        dataTemplate = "[DD]/[MM]/[YYYY];[hh]:[mm]:[ss];[th0temp-act:0];[thb0seapress-act:0];[th0hum-act:0];[wind0avgwind-act:0];[wind0dir-avg5.0:0];[rain0total-daysum:0];[rain0rate-act:0];[th0dew-act:0];[wind0chill-act:0];[wind0wind-max1:0];[th0lowbat-act.0:0];[thb0temp-act:0];[thb0hum-act.0:0];[th0temp-dmax:0];[th0temp-dmin:0];[wind0wind-act:0];[th0heatindex-act.1:0];[uv0index-act:0];[sol0rad-act:0];[th0temp-mmin.1:0];[th0temp-mmax.1:0];[th0temp-ymin.1:0];[th0temp-ymax.1:0];[wind0wind-mmax.1:0];[wind0wind-ymax.1:0];[rain0total-mmax.1:0];[rain0total-ymax.1:0];[rain0rate-mmax.1:0];[rain0rate-ymax.1:0];[lgt0total-act.0:0];[lgt0energy-act.0:0];[lgt0dist-act.0:0];[air0pm-act.0:0];[forecast-text:]"
         endpoint = f"http://{self._user}:{self._pass}@{self._host}/cgi-bin/template.cgi?template={dataTemplate}"
 
         data = await self.async_request("get", endpoint)
@@ -377,8 +378,16 @@ class Meteobridge:
                     "icon": "map-marker-circle",
                     "unit": sensor_unit.distance(self._unit_system),
                     },
-                "forecast": {
+                "air_pollution": {
                     "value": values[34],
+                    "name": "Air pollution",
+                    "type": DEVICE_TYPE_SENSOR,
+                    "device_class": DEVICE_CLASS_NONE,
+                    "icon": "air-filter",
+                    "unit": "µg/m3",
+                    },
+                "forecast": {
+                    "value": values[35],
                     "name": "Station forecast",
                     "type": DEVICE_TYPE_SENSOR,
                     "device_class": DEVICE_CLASS_NONE,
@@ -389,7 +398,7 @@ class Meteobridge:
                     "value": True if float(self._outtemp) < 0 else False,
                     "name": "Is freezing",
                     "type": DEVICE_TYPE_BINARY_SENSOR,
-                    "device_class": DEVICE_CLASS_NONE,
+                    "device_class": DEVICE_CLASS_COLD,
                     "icon": "thermometer-minus,thermometer-plus",
                     "unit": None,
                     },
