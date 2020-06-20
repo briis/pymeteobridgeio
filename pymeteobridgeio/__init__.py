@@ -18,4 +18,5 @@ from pymeteobridgeio.const import (
     DEVICE_TYPE_NONE,
     UNIT_SYSTEM_IMPERIAL,
     UNIT_SYSTEM_METRIC,
+    SUPPORTED_LANGUAGES,
 )
