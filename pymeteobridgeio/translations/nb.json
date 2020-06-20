@@ -1,0 +1,35 @@
+{
+    "beaufort": {
+        "0": "Stille",
+        "1": "Flau vind",
+        "2": "Svak vind",
+        "3": "Lett bris",
+        "4": "Laber bris",
+        "5": "Frisk bris",
+        "6": "Liten kuling",
+        "7": "Stiv kuling",
+        "8": "Sterk kuling",
+        "9": "Liten storm",
+        "10": "Full storm",
+        "11": "Sterk storm",
+        "12": "Orkan"
+    },
+    "wind_dir": {
+        "N": "N",
+        "NNE": "NNØ",
+        "NE": "NØ",
+        "ENE": "ØNØ",
+        "E": "Ø",
+        "ESE": "ØSØ",
+        "SE": "SØ",
+        "SSE": "SSØ",
+        "S": "S",
+        "SSW": "SSV",
+        "SW": "SV",
+        "WSW": "VSV",
+        "W": "V",
+        "WNW": "VNV",
+        "NW": "NV",
+        "NNW": "NNV"
+    }
+}

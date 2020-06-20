@@ -31,3 +31,17 @@ UNIT_TYPE_TEMP_FAHRENHEIT = "°F"
 UNIT_TYPE_WIND_KMH = "km/h"
 UNIT_TYPE_WIND_MS = "m/s"
 UNIT_TYPE_WIND_MPH = "mph"
+
+
+SUPPORTED_LANGUAGES = [
+    "en",
+    "da",
+    "nl",
+    "es",
+    "de",
+    "fr",
+    "it",
+    "nb",
+    "sv",
+    "pt",
+]

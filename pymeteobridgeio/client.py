@@ -49,12 +49,14 @@ class Meteobridge:
         User: str,
         Pass: str,
         unit_system: str = UNIT_SYSTEM_METRIC,
+        language: str = "en",
         session: Optional[ClientSession] = None,
     ):
         self._host = Host
         self._user = User
         self._pass = Pass
         self._unit_system = unit_system
+        self._language = language
         self._session: ClientSession = session
 
     async def get_sensor_data(self) -> dict:
@@ -79,7 +81,7 @@ class Meteobridge:
             item = {
                 "mac_address": values[0],
                 "swversion": values[1],
-                "platform_hw": hw_name.platform(values[2]),
+                "platform_hw": await hw_name.platform(values[2]),
                 "station_hw": values[3],
                 "wlan_ip": values[4],
                 "lan_ip": values[5],
@@ -90,7 +92,7 @@ class Meteobridge:
     async def _sensor_data(self) -> None:
         """Gets the sensor data from the Meteobridge Logger"""
 
-        dataTemplate = "[DD]/[MM]/[YYYY];[hh]:[mm]:[ss];[th0temp-act:0];[thb0seapress-act:0];[th0hum-act:0];[wind0avgwind-act:0];[wind0dir-avg5.0:0];[rain0total-daysum:0];[rain0rate-act:0];[th0dew-act:0];[wind0chill-act:0];[wind0wind-max1:0];[th0lowbat-act.0:0];[thb0temp-act:0];[thb0hum-act.0:0];[th0temp-dmax:0];[th0temp-dmin:0];[wind0wind-act:0];[th0heatindex-act.1:0];[uv0index-act:0];[sol0rad-act:0];[th0temp-mmin.1:0];[th0temp-mmax.1:0];[th0temp-ymin.1:0];[th0temp-ymax.1:0];[wind0wind-mmax.1:0];[wind0wind-ymax.1:0];[rain0total-mmax.1:0];[rain0total-ymax.1:0];[rain0rate-mmax.1:0];[rain0rate-ymax.1:0];[lgt0total-act.0:0];[lgt0energy-act.0:0];[lgt0dist-act.0:0];[air0pm-act.0:0];[forecast-text:]"
+        dataTemplate = "[DD]/[MM]/[YYYY];[hh]:[mm]:[ss];[th0temp-act:0];[thb0seapress-act:0];[th0hum-act:0];[wind0avgwind-act:0];[wind0dir-avg5.0:0];[rain0total-daysum:0];[rain0rate-act:0];[th0dew-act:0];[wind0chill-act:0];[wind0wind-max1:0];[th0lowbat-act.0:0];[thb0temp-act:0];[thb0hum-act.0:0];[th0temp-dmax:0];[th0temp-dmin:0];[wind0wind-act:0];[th0heatindex-act.1:0];[uv0index-act:0];[sol0rad-act:0];[th0temp-mmin.1:0];[th0temp-mmax.1:0];[th0temp-ymin.1:0];[th0temp-ymax.1:0];[wind0wind-mmax.1:0];[wind0wind-ymax.1:0];[rain0total-mmax.1:0];[rain0total-ymax.1:0];[rain0rate-mmax.1:0];[rain0rate-ymax.1:0];[lgt0total-act.0:0];[lgt0energy-act.0:0];[lgt0dist-act.0:0];[air0pm-act.0:0];[wind0wind-act=bft.0:0];[forecast-text:]"
         endpoint = f"http://{self._user}:{self._pass}@{self._host}/cgi-bin/template.cgi?template={dataTemplate}"
 
         data = await self.async_request("get", endpoint)
@@ -101,10 +103,10 @@ class Meteobridge:
         sensor_item = {}
 
         for values in rows:
-            self._outtemp = cnv.temperature(float(values[2]), self._unit_system)
-            self._heatindex = cnv.temperature(float(values[18]), self._unit_system)
-            self._windchill = cnv.temperature(float(values[10]), self._unit_system)
-            self._rainrate = cnv.rate(float(values[8]), self._unit_system)
+            self._outtemp = await cnv.temperature(float(values[2]), self._unit_system)
+            self._heatindex = await cnv.temperature(float(values[18]), self._unit_system)
+            self._windchill = await cnv.temperature(float(values[10]), self._unit_system)
+            self._rainrate = await cnv.rate(float(values[8]), self._unit_system)
             sensor_item = {
                 "timestamp": {
                     "value": datetime.strptime(f"{values[0]} {values[1]}", "%d/%m/%Y %H:%M:%S"),
@@ -120,15 +122,15 @@ class Meteobridge:
                     "type": DEVICE_TYPE_SENSOR,
                     "device_class": DEVICE_CLASS_TEMPERATURE,
                     "icon": "thermometer",
-                    "unit": sensor_unit.temperature(self._unit_system)
+                    "unit": await sensor_unit.temperature(self._unit_system)
                     },
                 "pressure": {
-                    "value": cnv.pressure(float(values[3]), self._unit_system),
+                    "value": await cnv.pressure(float(values[3]), self._unit_system),
                     "name": "Pressure",
                     "type": DEVICE_TYPE_SENSOR,
                     "device_class": DEVICE_CLASS_PRESSURE,
                     "icon": "gauge",
-                    "unit": sensor_unit.pressure(self._unit_system),
+                    "unit": await sensor_unit.pressure(self._unit_system),
                     },
                 "humidity": {
                     "value": values[4],
@@ -139,12 +141,12 @@ class Meteobridge:
                     "unit": "%",
                     },
                 "windspeedavg": {
-                    "value": cnv.speed(float(values[5]), self._unit_system),
+                    "value": await cnv.speed(float(values[5]), self._unit_system),
                     "name": "Wind Speed Avg",
                     "type": DEVICE_TYPE_SENSOR,
                     "device_class": DEVICE_CLASS_WIND,
                     "icon": "weather-windy",
-                    "unit": sensor_unit.wind(self._unit_system),
+                    "unit": await sensor_unit.wind(self._unit_system),
                     },
                 "windbearing": {
                     "value": int(float(values[6])),
@@ -155,7 +157,7 @@ class Meteobridge:
                     "unit": "°",
                     },
                 "winddirection": {
-                    "value": cnv.wind_direction(float(values[6])),
+                    "value": await cnv.wind_direction(float(values[6]), self._language),
                     "name": "Wind Direction",
                     "type": DEVICE_TYPE_SENSOR,
                     "device_class": DEVICE_CLASS_NONE,
@@ -163,12 +165,12 @@ class Meteobridge:
                     "unit": None,
                     },
                 "raintoday": {
-                    "value": cnv.volume(float(values[7]), self._unit_system),
+                    "value": await cnv.volume(float(values[7]), self._unit_system),
                     "name": "Rain today",
                     "type": DEVICE_TYPE_SENSOR,
                     "device_class": DEVICE_CLASS_RAIN,
                     "icon": "weather-rainy",
-                    "unit": sensor_unit.rain(self._unit_system),
+                    "unit": await sensor_unit.rain(self._unit_system),
                     },
                 "rainrate": {
                     "value": self._rainrate,
@@ -176,15 +178,15 @@ class Meteobridge:
                     "type": DEVICE_TYPE_SENSOR,
                     "device_class": DEVICE_CLASS_RAIN,
                     "icon": "weather-pouring",
-                    "unit": sensor_unit.rain(self._unit_system, True),
+                    "unit": await sensor_unit.rain(self._unit_system, True),
                     },
                 "dewpoint": {
-                    "value": cnv.temperature(float(values[9]), self._unit_system),
+                    "value": await cnv.temperature(float(values[9]), self._unit_system),
                     "name": "Dew point",
                     "type": DEVICE_TYPE_SENSOR,
                     "device_class": DEVICE_CLASS_TEMPERATURE,
                     "icon": "thermometer",
-                    "unit": sensor_unit.temperature(self._unit_system),
+                    "unit": await sensor_unit.temperature(self._unit_system),
                     },
                 "windchill": {
                     "value": self._windchill,
@@ -192,23 +194,23 @@ class Meteobridge:
                     "type": DEVICE_TYPE_SENSOR,
                     "device_class": DEVICE_CLASS_TEMPERATURE,
                     "icon": "thermometer",
-                    "unit": sensor_unit.temperature(self._unit_system),
+                    "unit": await sensor_unit.temperature(self._unit_system),
                     },
                 "windgust": {
-                    "value": cnv.speed(float(values[11]), self._unit_system),
+                    "value": await cnv.speed(float(values[11]), self._unit_system),
                     "name": "Wind gust",
                     "type": DEVICE_TYPE_SENSOR,
                     "device_class": DEVICE_CLASS_WIND,
                     "icon": "weather-windy",
-                    "unit": sensor_unit.wind(self._unit_system),
+                    "unit": await sensor_unit.wind(self._unit_system),
                     },
                 "in_temperature": {
-                    "value": cnv.temperature(float(values[13]), self._unit_system),
+                    "value": await cnv.temperature(float(values[13]), self._unit_system),
                     "name": "Indoor temp",
                     "type": DEVICE_TYPE_SENSOR,
                     "device_class": DEVICE_CLASS_TEMPERATURE,
                     "icon": "thermometer",
-                    "unit": sensor_unit.temperature(self._unit_system),
+                    "unit": await sensor_unit.temperature(self._unit_system),
                     },
                 "in_humidity": {
                     "value": values[14],
@@ -219,28 +221,28 @@ class Meteobridge:
                     "unit": "%",
                     },
                 "temphigh": {
-                    "value": cnv.temperature(float(values[15]), self._unit_system),
+                    "value": await cnv.temperature(float(values[15]), self._unit_system),
                     "name": "Temp high today",
                     "type": DEVICE_TYPE_SENSOR,
                     "device_class": DEVICE_CLASS_TEMPERATURE,
                     "icon": "thermometer",
-                    "unit": sensor_unit.temperature(self._unit_system),
+                    "unit": await sensor_unit.temperature(self._unit_system),
                     },
                 "templow": {
-                    "value": cnv.temperature(float(values[16]), self._unit_system),
+                    "value": await cnv.temperature(float(values[16]), self._unit_system),
                     "name": "Temp low today",
                     "type": DEVICE_TYPE_SENSOR,
                     "device_class": DEVICE_CLASS_TEMPERATURE,
                     "icon": "thermometer",
-                    "unit": sensor_unit.temperature(self._unit_system),
+                    "unit": await sensor_unit.temperature(self._unit_system),
                     },
                 "windspeed": {
-                    "value": cnv.speed(float(values[17]), self._unit_system),
+                    "value": await cnv.speed(float(values[17]), self._unit_system),
                     "name": "Wind speed",
                     "type": DEVICE_TYPE_SENSOR,
                     "device_class": DEVICE_CLASS_WIND,
                     "icon": "weather-windy",
-                    "unit": sensor_unit.wind(self._unit_system),
+                    "unit": await sensor_unit.wind(self._unit_system),
                     },
                 "heatindex": {
                     "value": self._heatindex,
@@ -248,7 +250,7 @@ class Meteobridge:
                     "type": DEVICE_TYPE_SENSOR,
                     "device_class": DEVICE_CLASS_TEMPERATURE,
                     "icon": "thermometer",
-                    "unit": sensor_unit.temperature(self._unit_system),
+                    "unit": await sensor_unit.temperature(self._unit_system),
                     },
                 "uvindex": {
                     "value": float(values[19]),
@@ -267,92 +269,92 @@ class Meteobridge:
                     "unit": "W/m2",
                     },
                 "feels_like": {
-                    "value": cnv.feels_like(self._outtemp, self._heatindex, self._windchill, self._unit_system),
+                    "value": await cnv.feels_like(self._outtemp, self._heatindex, self._windchill, self._unit_system),
                     "name": "Feels like",
                     "type": DEVICE_TYPE_SENSOR,
                     "device_class": DEVICE_CLASS_TEMPERATURE,
                     "icon": "thermometer",
-                    "unit": sensor_unit.temperature(self._unit_system),
+                    "unit": await sensor_unit.temperature(self._unit_system),
                     },
                 "temp_month_min": {
-                    "value": cnv.temperature(float(values[21]), self._unit_system),
+                    "value": await cnv.temperature(float(values[21]), self._unit_system),
                     "name": "Temp month min",
                     "type": DEVICE_TYPE_SENSOR,
                     "device_class": DEVICE_CLASS_TEMPERATURE,
                     "icon": "thermometer",
-                    "unit": sensor_unit.temperature(self._unit_system),
+                    "unit": await sensor_unit.temperature(self._unit_system),
                     },
                 "temp_month_max": {
-                    "value": cnv.temperature(float(values[22]), self._unit_system),
+                    "value": await cnv.temperature(float(values[22]), self._unit_system),
                     "name": "Temp month max",
                     "type": DEVICE_TYPE_SENSOR,
                     "device_class": DEVICE_CLASS_TEMPERATURE,
                     "icon": "thermometer",
-                    "unit": sensor_unit.temperature(self._unit_system),
+                    "unit": await sensor_unit.temperature(self._unit_system),
                     },
                 "temp_year_min": {
-                    "value": cnv.temperature(float(values[23]), self._unit_system),
+                    "value": await cnv.temperature(float(values[23]), self._unit_system),
                     "name": "Temp year min",
                     "type": DEVICE_TYPE_SENSOR,
                     "device_class": DEVICE_CLASS_TEMPERATURE,
                     "icon": "thermometer",
-                    "unit": sensor_unit.temperature(self._unit_system),
+                    "unit": await sensor_unit.temperature(self._unit_system),
                     },
                 "temp_year_max": {
-                    "value": cnv.temperature(float(values[24]), self._unit_system),
+                    "value": await cnv.temperature(float(values[24]), self._unit_system),
                     "name": "Temp year max",
                     "type": DEVICE_TYPE_SENSOR,
                     "device_class": DEVICE_CLASS_TEMPERATURE,
                     "icon": "thermometer",
-                    "unit": sensor_unit.temperature(self._unit_system),
+                    "unit": await sensor_unit.temperature(self._unit_system),
                     },
                 "wind_month_max": {
-                    "value": cnv.speed(float(values[25]), self._unit_system),
+                    "value": await cnv.speed(float(values[25]), self._unit_system),
                     "name": "Wind speed month max",
                     "type": DEVICE_TYPE_SENSOR,
                     "device_class": DEVICE_CLASS_WIND,
                     "icon": "weather-windy",
-                    "unit": sensor_unit.wind(self._unit_system),
+                    "unit": await sensor_unit.wind(self._unit_system),
                     },
                 "wind_year_max": {
-                    "value": cnv.speed(float(values[26]), self._unit_system),
+                    "value": await cnv.speed(float(values[26]), self._unit_system),
                     "name": "Wind speed year max",
                     "type": DEVICE_TYPE_SENSOR,
                     "device_class": DEVICE_CLASS_WIND,
                     "icon": "weather-windy",
-                    "unit": sensor_unit.wind(self._unit_system),
+                    "unit": await sensor_unit.wind(self._unit_system),
                     },
                 "rain_month_max": {
-                    "value": cnv.volume(float(values[27]), self._unit_system),
+                    "value": await cnv.volume(float(values[27]), self._unit_system),
                     "name": "Rain month total",
                     "type": DEVICE_TYPE_SENSOR,
                     "device_class": DEVICE_CLASS_RAIN,
                     "icon": "weather-rainy",
-                    "unit": sensor_unit.rain(self._unit_system),
+                    "unit": await sensor_unit.rain(self._unit_system),
                     },
                 "rain_year_max": {
-                    "value": cnv.volume(float(values[28]), self._unit_system),
+                    "value": await cnv.volume(float(values[28]), self._unit_system),
                     "name": "Rain year total",
                     "type": DEVICE_TYPE_SENSOR,
                     "device_class": DEVICE_CLASS_RAIN,
                     "icon": "weather-rainy",
-                    "unit": sensor_unit.rain(self._unit_system),
+                    "unit": await sensor_unit.rain(self._unit_system),
                     },
                 "rainrate_month_max": {
-                    "value": cnv.volume(float(values[29]), self._unit_system),
+                    "value": await cnv.volume(float(values[29]), self._unit_system),
                     "name": "Rain rate month max",
                     "type": DEVICE_TYPE_SENSOR,
                     "device_class": DEVICE_CLASS_RAIN,
                     "icon": "weather-pouring",
-                    "unit": sensor_unit.rain(self._unit_system, True),
+                    "unit": await sensor_unit.rain(self._unit_system, True),
                     },
                 "rainrate_year_max": {
-                    "value": cnv.volume(float(values[30]), self._unit_system),
+                    "value": await cnv.volume(float(values[30]), self._unit_system),
                     "name": "Rain rate year max",
                     "type": DEVICE_TYPE_SENSOR,
                     "device_class": DEVICE_CLASS_RAIN,
                     "icon": "weather-pouring",
-                    "unit": sensor_unit.rain(self._unit_system, True),
+                    "unit": await sensor_unit.rain(self._unit_system, True),
                     },
                 "lightning_count": {
                     "value": float(values[31]),
@@ -371,12 +373,12 @@ class Meteobridge:
                     "unit": None,
                     },
                 "lightning_distance": {
-                    "value": cnv.distance(float(values[33]), self._unit_system),
+                    "value": await cnv.distance(float(values[33]), self._unit_system),
                     "name": "Lightning Distance",
                     "type": DEVICE_TYPE_SENSOR,
                     "device_class": DEVICE_CLASS_DISTANCE,
                     "icon": "map-marker-circle",
-                    "unit": sensor_unit.distance(self._unit_system),
+                    "unit": await sensor_unit.distance(self._unit_system),
                     },
                 "air_pollution": {
                     "value": values[34],
@@ -386,8 +388,24 @@ class Meteobridge:
                     "icon": "air-filter",
                     "unit": "µg/m3",
                     },
-                "forecast": {
+                "bft_value": {
                     "value": values[35],
+                    "name": "Beaufort Value",
+                    "type": DEVICE_TYPE_SENSOR,
+                    "device_class": DEVICE_CLASS_NONE,
+                    "icon": "weather-tornado",
+                    "unit": "BFT",
+                    },
+                "bft_text": {
+                    "value": await cnv.beaufort_text(values[35], self._language),
+                    "name": "Beaufort Text",
+                    "type": DEVICE_TYPE_SENSOR,
+                    "device_class": DEVICE_CLASS_NONE,
+                    "icon": "weather-tornado",
+                    "unit": None,
+                    },
+                "forecast": {
+                    "value": values[36],
                     "name": "Station forecast",
                     "type": DEVICE_TYPE_SENSOR,
                     "device_class": DEVICE_CLASS_NONE,

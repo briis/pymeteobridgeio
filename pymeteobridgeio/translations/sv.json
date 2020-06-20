@@ -1,0 +1,35 @@
+{
+    "beaufort": {
+        "0": "Lugnt",
+        "1": "Svag vind",
+        "2": "Svag vind",
+        "3": "Måttlig vind",
+        "4": "Måttlig vind",
+        "5": "Frisk vind",
+        "6": "Frisk vind",
+        "7": "Hård vind",
+        "8": "Hård vind",
+        "9": "Hård vind",
+        "10": "Storm",
+        "11": "Storm",
+        "12": "Orkan"
+    },
+    "wind_dir": {
+        "N": "N",
+        "NNE": "NNÖ",
+        "NE": "NÖ",
+        "ENE": "ÖNÖ",
+        "E": "Ö",
+        "ESE": "ÖSÖ",
+        "SE": "SÖ",
+        "SSE": "SSÖ",
+        "S": "S",
+        "SSW": "SSV",
+        "SW": "SV",
+        "WSW": "VSV",
+        "W": "V",
+        "WNW": "VNV",
+        "NW": "NV",
+        "NNW": "NNV"
+    }
+}

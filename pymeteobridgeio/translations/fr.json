@@ -1,0 +1,35 @@
+{
+    "beaufort": {
+        "0": "Calme",
+        "1": "Très légère brise",
+        "2": "Légére brise",
+        "3": "Petit brise",
+        "4": "Jolie brise",
+        "5": "Bonne brise",
+        "6": "Vent frais",
+        "7": "Grand frais",
+        "8": "Coup de vent",
+        "9": "Fort coup de vent",
+        "10": "Tempête",
+        "11": "Violent tempête",
+        "12": "Ouragan"
+    },
+    "wind_dir": {
+        "N": "N",
+        "NNE": "NNE",
+        "NE": "NE",
+        "ENE": "ENE",
+        "E": "E",
+        "ESE": "ESE",
+        "SE": "SE",
+        "SSE": "SSE",
+        "S": "S",
+        "SSW": "SSO",
+        "SW": "SO",
+        "WSW": "OSO",
+        "W": "O",
+        "WNW": "ONO",
+        "NW": "NO",
+        "NNW": "NNO"
+    }
+}
