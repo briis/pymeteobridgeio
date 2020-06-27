@@ -1,7 +1,7 @@
 # pymeteobridgeio
 A Python Wrapper to communicate with a Meteobridge Weather Data Logger
 
-To run `test_pymeteobridge.py` first create a file called `settings.json` in the same directory, and put the following contents inthere:
+To run `test_pymeteobridge.py` first create a file called `settings.json` in the same directory, and put the following contents in there:
 
 ````
 {
