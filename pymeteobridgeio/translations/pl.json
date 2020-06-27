@@ -1,0 +1,35 @@
+{
+    "beaufort": {
+        "0": "Cisza",
+        "1": "Lekki powiew",
+        "2": "Słaby wiatr",
+        "3": "Łagodny wiatr",
+        "4": "Umiarkowany wiatr",
+        "5": "Dość silny wiatr",
+        "6": "Silny wiatr",
+        "7": "Bardzo silny wiatr",
+        "8": "Sztorm",
+        "9": "Silny sztorm",
+        "10": "Bardzo silny sztorm",
+        "11": "Gwałtowny sztorm",
+        "12": "Huragan"
+    },
+    "wind_dir": {
+        "N": "N",
+        "NNE": "NNE",
+        "NE": "NE",
+        "ENE": "ENE",
+        "E": "E",
+        "ESE": "ESE",
+        "SE": "SE",
+        "SSE": "SSE",
+        "S": "S",
+        "SSW": "SSW",
+        "SW": "SW",
+        "WSW": "WSW",
+        "W": "W",
+        "WNW": "WNW",
+        "NW": "NW",
+        "NNW": "NNW"
+    }
+}
