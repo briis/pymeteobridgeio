@@ -446,7 +446,7 @@ class Meteobridge:
                     {
                         "temperature_2": {
                             "value": await cnv.temperature(float(values[36]), self._unit_system),
-                            "name": "Temperature",
+                            "name": "Temperature 2",
                             "type": DEVICE_TYPE_SENSOR,
                             "device_class": DEVICE_CLASS_TEMPERATURE,
                             "icon": "thermometer",
@@ -454,7 +454,7 @@ class Meteobridge:
                             },
                         "humidity_2": {
                             "value": values[37],
-                            "name": "Humidity",
+                            "name": "Humidity 2",
                             "type": DEVICE_TYPE_SENSOR,
                             "device_class": DEVICE_CLASS_HUMIDITY,
                             "icon": "water-percent",
@@ -462,7 +462,7 @@ class Meteobridge:
                             },
                         "heatindex_2": {
                             "value": await cnv.temperature(float(values[38]), self._unit_system),
-                            "name": "Heat index",
+                            "name": "Heat index 2",
                             "type": DEVICE_TYPE_SENSOR,
                             "device_class": DEVICE_CLASS_TEMPERATURE,
                             "icon": "thermometer",
@@ -475,7 +475,7 @@ class Meteobridge:
                     {
                         "temperature_3": {
                             "value": await cnv.temperature(float(values[39]), self._unit_system),
-                            "name": "Temperature",
+                            "name": "Temperature 3",
                             "type": DEVICE_TYPE_SENSOR,
                             "device_class": DEVICE_CLASS_TEMPERATURE,
                             "icon": "thermometer",
@@ -483,7 +483,7 @@ class Meteobridge:
                             },
                         "humidity_3": {
                             "value": values[40],
-                            "name": "Humidity",
+                            "name": "Humidity 3",
                             "type": DEVICE_TYPE_SENSOR,
                             "device_class": DEVICE_CLASS_HUMIDITY,
                             "icon": "water-percent",
@@ -491,7 +491,7 @@ class Meteobridge:
                             },
                         "heatindex_3": {
                             "value": await cnv.temperature(float(values[41]), self._unit_system),
-                            "name": "Heat index",
+                            "name": "Heat index 3",
                             "type": DEVICE_TYPE_SENSOR,
                             "device_class": DEVICE_CLASS_TEMPERATURE,
                             "icon": "thermometer",
