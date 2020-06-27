@@ -20,7 +20,7 @@ _LOGGER = logging.getLogger(__name__)
 USERNAME = "meteobridge"
 UNIT_SYSTEM = UNIT_SYSTEM_METRIC
 LANGUAGE = "da"
-ADDITONAL_SENSORS = 0
+EXTRA_SENSORS = 2
 
 async def realtime_data():
     """Return the raw data from a Meteobridge Station."""
@@ -40,7 +40,7 @@ async def realtime_data():
     session = ClientSession()
 
     # Connect to Meteobridge
-    mb = Meteobridge(host, USERNAME, password, UNIT_SYSTEM, LANGUAGE, session)
+    mb = Meteobridge(host, USERNAME, password, UNIT_SYSTEM, LANGUAGE, EXTRA_SENSORS, session)
     
     try:
         _LOGGER.info("GETTING SERVER DATA:")

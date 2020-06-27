@@ -50,6 +50,7 @@ class Meteobridge:
         Pass: str,
         unit_system: str = UNIT_SYSTEM_METRIC,
         language: str = "en",
+        extra_sensors: int = 0,
         session: Optional[ClientSession] = None,
     ):
         self._host = Host
@@ -57,6 +58,7 @@ class Meteobridge:
         self._pass = Pass
         self._unit_system = unit_system
         self._language = language
+        self._extra_sensors = extra_sensors
         self._session: ClientSession = session
 
     async def get_sensor_data(self) -> dict:
@@ -92,7 +94,7 @@ class Meteobridge:
     async def _sensor_data(self) -> None:
         """Gets the sensor data from the Meteobridge Logger"""
 
-        dataTemplate = "[DD]/[MM]/[YYYY];[hh]:[mm]:[ss];[th0temp-act:0];[thb0seapress-act:0];[th0hum-act:0];[wind0avgwind-act:0];[wind0dir-avg5.0:0];[rain0total-daysum:0];[rain0rate-act:0];[th0dew-act:0];[wind0chill-act:0];[wind0wind-max1:0];[th0lowbat-act.0:0];[thb0temp-act:0];[thb0hum-act.0:0];[th0temp-dmax:0];[th0temp-dmin:0];[wind0wind-act:0];[th0heatindex-act.1:0];[uv0index-act:0];[sol0rad-act:0];[th0temp-mmin.1:0];[th0temp-mmax.1:0];[th0temp-ymin.1:0];[th0temp-ymax.1:0];[wind0wind-mmax.1:0];[wind0wind-ymax.1:0];[rain0total-mmax.1:0];[rain0total-ymax.1:0];[rain0rate-mmax.1:0];[rain0rate-ymax.1:0];[lgt0total-act.0:0];[lgt0energy-act.0:0];[lgt0dist-act.0:0];[air0pm-act.0:0];[wind0wind-act=bft.0:0];[forecast-text:]"
+        dataTemplate = "[DD]/[MM]/[YYYY];[hh]:[mm]:[ss];[th0temp-act:0];[thb0seapress-act:0];[th0hum-act:0];[wind0avgwind-act:0];[wind0dir-avg5.0:0];[rain0total-daysum:0];[rain0rate-act:0];[th0dew-act:0];[wind0chill-act:0];[wind0wind-max1:0];[th0lowbat-act.0:0];[thb0temp-act:0];[thb0hum-act.0:0];[th0temp-dmax:0];[th0temp-dmin:0];[wind0wind-act:0];[th0heatindex-act.1:0];[uv0index-act:0];[sol0rad-act:0];[th0temp-mmin.1:0];[th0temp-mmax.1:0];[th0temp-ymin.1:0];[th0temp-ymax.1:0];[wind0wind-mmax.1:0];[wind0wind-ymax.1:0];[rain0total-mmax.1:0];[rain0total-ymax.1:0];[rain0rate-mmax.1:0];[rain0rate-ymax.1:0];[lgt0total-act.0:0];[lgt0energy-act.0:0];[lgt0dist-act.0:0];[air0pm-act.0:0];[wind0wind-act=bft.0:0];[th1temp-act:0];[th1hum-act:0];[th1heatindex-act.1:0];[th2temp-act:0];[th2hum-act:0];[th2heatindex-act.1:0];[forecast-text:]"
         endpoint = f"http://{self._user}:{self._pass}@{self._host}/cgi-bin/template.cgi?template={dataTemplate}"
 
         data = await self.async_request("get", endpoint)
@@ -405,7 +407,7 @@ class Meteobridge:
                     "unit": None,
                     },
                 "forecast": {
-                    "value": values[36],
+                    "value": values[42],
                     "name": "Station forecast",
                     "type": DEVICE_TYPE_SENSOR,
                     "device_class": DEVICE_CLASS_NONE,
@@ -437,6 +439,68 @@ class Meteobridge:
                     "unit": None,
                     },
             }
+
+            # Check if there are Extra Sensors defined in the station
+            if self._extra_sensors > 0:
+                sensor_item.update(
+                    {
+                        "temperature_2": {
+                            "value": await cnv.temperature(float(values[36]), self._unit_system),
+                            "name": "Temperature",
+                            "type": DEVICE_TYPE_SENSOR,
+                            "device_class": DEVICE_CLASS_TEMPERATURE,
+                            "icon": "thermometer",
+                            "unit": await sensor_unit.temperature(self._unit_system)
+                            },
+                        "humidity_2": {
+                            "value": values[37],
+                            "name": "Humidity",
+                            "type": DEVICE_TYPE_SENSOR,
+                            "device_class": DEVICE_CLASS_HUMIDITY,
+                            "icon": "water-percent",
+                            "unit": "%",
+                            },
+                        "heatindex_2": {
+                            "value": await cnv.temperature(float(values[38]), self._unit_system),
+                            "name": "Heat index",
+                            "type": DEVICE_TYPE_SENSOR,
+                            "device_class": DEVICE_CLASS_TEMPERATURE,
+                            "icon": "thermometer",
+                            "unit": await sensor_unit.temperature(self._unit_system),
+                            },
+                    }
+                )
+            if self._extra_sensors > 1:
+                sensor_item.update(
+                    {
+                        "temperature_3": {
+                            "value": await cnv.temperature(float(values[39]), self._unit_system),
+                            "name": "Temperature",
+                            "type": DEVICE_TYPE_SENSOR,
+                            "device_class": DEVICE_CLASS_TEMPERATURE,
+                            "icon": "thermometer",
+                            "unit": await sensor_unit.temperature(self._unit_system)
+                            },
+                        "humidity_3": {
+                            "value": values[40],
+                            "name": "Humidity",
+                            "type": DEVICE_TYPE_SENSOR,
+                            "device_class": DEVICE_CLASS_HUMIDITY,
+                            "icon": "water-percent",
+                            "unit": "%",
+                            },
+                        "heatindex_3": {
+                            "value": await cnv.temperature(float(values[41]), self._unit_system),
+                            "name": "Heat index",
+                            "type": DEVICE_TYPE_SENSOR,
+                            "device_class": DEVICE_CLASS_TEMPERATURE,
+                            "icon": "thermometer",
+                            "unit": await sensor_unit.temperature(self._unit_system),
+                            },
+                    }
+                )
+
+
 
         return sensor_item
 
