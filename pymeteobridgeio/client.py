@@ -524,14 +524,14 @@ class Meteobridge:
                 return decoded_content
         except asyncio.TimeoutError:
             raise RequestError("Request to endpoint timed out: {endpoint}")
-        except ClientError as err:
-            if err.message == "Unauthorized":
+        except ClientError:
+            if "Unauthorized" in resp.reason:
                 raise InvalidCredentials("Your Username/Password combination is not correct")
-            elif err.message == "Not Found":
+            elif "Not Found" in resp.reason:
                 raise ResultError("The Meteobridge cannot not be found on this IP Address")
             else:
                 raise RequestError(
-                    f"Error requesting data from {endpoint}: {err}"
+                    f"Error requesting data from {endpoint}: {resp.reason}"
                 ) from None
         finally:
             if not use_running_session:
