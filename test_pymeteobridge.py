@@ -9,6 +9,8 @@ import logging
 from pymeteobridgeio import (
     Meteobridge,
     RequestError,
+    ResultError,
+    InvalidCredentials,
     DEVICE_TYPE_BINARY_SENSOR,
     DEVICE_TYPE_SENSOR,
     UNIT_SYSTEM_IMPERIAL,
@@ -53,7 +55,7 @@ async def realtime_data():
             if data[sensor]["type"] == DEVICE_TYPE_SENSOR or data[sensor]["type"] == DEVICE_TYPE_BINARY_SENSOR:
                 _LOGGER.info(f"SENSOR: {sensor} VALUE: {data[sensor]['value']} UNIT: {data[sensor]['unit']} ")
 
-    except RequestError as err:
+    except (RequestError, ResultError, InvalidCredentials) as err:
         _LOGGER.info(err)
 
     end = time.time()
