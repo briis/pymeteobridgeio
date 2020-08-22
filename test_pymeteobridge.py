@@ -13,14 +13,28 @@ from pymeteobridgeio import (
     InvalidCredentials,
     DEVICE_TYPE_BINARY_SENSOR,
     DEVICE_TYPE_SENSOR,
-    UNIT_SYSTEM_IMPERIAL,
-    UNIT_SYSTEM_METRIC
+    UNIT_TYPE_DIST_KM,
+    UNIT_TYPE_DIST_MI,
+    UNIT_TYPE_PRESSURE_HPA,
+    UNIT_TYPE_PRESSURE_INHG,
+    UNIT_TYPE_PRESSURE_MB,
+    UNIT_TYPE_RAIN_MM,
+    UNIT_TYPE_RAIN_IN,
+    UNIT_TYPE_TEMP_CELCIUS,
+    UNIT_TYPE_TEMP_FAHRENHEIT,
+    UNIT_TYPE_WIND_KMH,
+    UNIT_TYPE_WIND_MS,
+    UNIT_TYPE_WIND_MPH,
 )
 
 _LOGGER = logging.getLogger(__name__)
 
 USERNAME = "meteobridge"
-UNIT_SYSTEM = UNIT_SYSTEM_METRIC
+U_TEMP = UNIT_TYPE_TEMP_FAHRENHEIT
+U_RAIN = UNIT_TYPE_RAIN_IN
+U_WIND = UNIT_TYPE_WIND_MPH
+U_PRES = UNIT_TYPE_PRESSURE_INHG
+U_DIST = UNIT_TYPE_DIST_MI
 LANGUAGE = "da"
 EXTRA_SENSORS = 2
 
@@ -42,7 +56,7 @@ async def realtime_data():
     session = ClientSession()
 
     # Connect to Meteobridge
-    mb = Meteobridge(host, USERNAME, password, UNIT_SYSTEM, LANGUAGE, EXTRA_SENSORS, session)
+    mb = Meteobridge(host, USERNAME, password, U_TEMP, U_WIND, U_RAIN, U_PRES, U_DIST, LANGUAGE, EXTRA_SENSORS, session)
     
     try:
         _LOGGER.info("GETTING SERVER DATA:")

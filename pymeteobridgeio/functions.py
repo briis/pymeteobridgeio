@@ -22,7 +22,7 @@ class Conversion:
 
     """
     Conversion Class to convert between different units.
-    WeatherFlow always delivers values in the following formats:
+    Meteobridge always delivers values in the following formats:
     Temperature: C
     Wind Speed: m/s
     Wind Direction: Degrees
@@ -31,7 +31,7 @@ class Conversion:
     """
 
     async def temperature(self, value, unit):
-        if unit == UNIT_SYSTEM_IMPERIAL:
+        if unit != UNIT_TYPE_TEMP_CELCIUS:
             # Return value F
             return round((value * 9 / 5) + 32, 1)
         else:
@@ -39,7 +39,7 @@ class Conversion:
             return round(value, 1)
 
     async def volume(self, value, unit):
-        if unit == UNIT_SYSTEM_IMPERIAL:
+        if unit != UNIT_TYPE_RAIN_MM:
             # Return value in
             return round(value * 0.0393700787, 2)
         else:
@@ -47,7 +47,7 @@ class Conversion:
             return round(value, 1)
 
     async def rate(self, value, unit):
-        if unit == UNIT_SYSTEM_IMPERIAL:
+        if unit != UNIT_TYPE_RAIN_MM:
             # Return value in
             return round(value * 0.0393700787, 2)
         else:
@@ -55,7 +55,7 @@ class Conversion:
             return round(value, 2)
 
     async def pressure(self, value, unit):
-        if unit == UNIT_SYSTEM_IMPERIAL:
+        if unit == UNIT_TYPE_PRESSURE_INHG:
             # Return value inHg
             return round(value * 0.0295299801647, 3)
         else:
@@ -63,10 +63,10 @@ class Conversion:
             return round(value, 1)
 
     async def speed(self, value, unit):
-        if unit == UNIT_SYSTEM_IMPERIAL:
+        if unit == UNIT_TYPE_WIND_MPH:
             # Return value in mi/h
             return round(value * 2.2369362921, 1)
-        elif unit == "uk":
+        elif unit == UNIT_TYPE_WIND_KMH:
             # Return value in km/h
             return round(value * 3.6, 1)
         else:
@@ -74,7 +74,7 @@ class Conversion:
             return round(value, 1)
 
     async def distance(self, value, unit):
-        if unit == UNIT_SYSTEM_IMPERIAL:
+        if unit == UNIT_TYPE_DIST_MI:
             # Return value in mi
             return round(value * 0.621371192, 1)
         else:
@@ -83,7 +83,7 @@ class Conversion:
 
     async def feels_like(self, temp, heatindex, windchill, unit):
         """ Return Feels Like Temp."""
-        if unit == UNIT_SYSTEM_IMPERIAL:
+        if unit == UNIT_TYPE_TEMP_FAHRENHEIT:
             high_temp = 80
             low_temp = 50
         else:
