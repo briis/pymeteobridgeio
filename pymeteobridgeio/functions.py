@@ -31,7 +31,7 @@ class Conversion:
     """
 
     async def temperature(self, value, unit):
-        if unit != UNIT_TYPE_TEMP_CELCIUS:
+        if unit == UNIT_TYPE_TEMP_FAHRENHEIT:
             # Return value F
             return round((value * 9 / 5) + 32, 1)
         else:
