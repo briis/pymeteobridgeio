@@ -27,20 +27,11 @@ from pymeteobridgeio.const import (
     DEVICE_TYPE_BINARY_SENSOR,
     DEVICE_TYPE_NONE,
     DEVICE_TYPE_SENSOR,
-    UNIT_SYSTEM_METRIC,
-    UNIT_SYSTEM_IMPERIAL,
     UNIT_TYPE_DIST_KM,
-    UNIT_TYPE_DIST_MI,
-    UNIT_TYPE_PRESSURE_HPA,
-    UNIT_TYPE_PRESSURE_INHG,
     UNIT_TYPE_PRESSURE_MB,
     UNIT_TYPE_RAIN_MM,
-    UNIT_TYPE_RAIN_IN,
     UNIT_TYPE_TEMP_CELCIUS,
-    UNIT_TYPE_TEMP_FAHRENHEIT,
-    UNIT_TYPE_WIND_KMH,
     UNIT_TYPE_WIND_MS,
-    UNIT_TYPE_WIND_MPH,
 )
 from pymeteobridgeio.errors import (
     InvalidCredentials,
@@ -109,7 +100,7 @@ class Meteobridge:
                 "lan_ip": values[5],
                 "ip_address": values[5] if values[4] == "None" else values[4],
             }
-        return item
+            return item
 
     async def _sensor_data(self) -> None:
         """Gets the sensor data from the Meteobridge Logger"""
