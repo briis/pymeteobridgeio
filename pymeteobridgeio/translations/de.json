@@ -31,5 +31,10 @@
         "WNW": "WNW",
         "NW": "NW",
         "NNW": "NNW"
+    },
+    "trend": {
+        "falling": "fallen",
+        "rising": "steigend",
+        "steady": "stabil"
     }
 }

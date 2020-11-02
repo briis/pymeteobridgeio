@@ -106,6 +106,20 @@ class Conversion:
         """Return a localized Beaufort description."""
         return await get_localized_text(language, str(bft_value), "beaufort")
 
+    async def trend_text(self, value, language):
+        """Returns a localized Trend String."""
+        try:
+            value = float(value)
+            if value > 0:
+                text = "rising"
+            elif value < 0:
+                text = "falling"
+            else:
+                text = "steady"
+            return await get_localized_text(language, text, "trend")
+        except:
+            return "error"
+            
 class Units:
     """Returns the correct Display Unit for the current 
        Unit System and type of Sensor."""
