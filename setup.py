@@ -6,7 +6,7 @@ setup(
     "": ["*.md"],
     "pymeteobridgeio": ["translations/*.json"],
   },
-  version = '0.21.4',
+  version = '0.21.5',
   license='MIT',
   description = 'Python Wrapper for Meteobridge Data Logger', 
   author = 'Bjarne Riis',
