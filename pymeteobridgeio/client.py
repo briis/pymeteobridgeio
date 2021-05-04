@@ -105,7 +105,7 @@ class Meteobridge:
     async def _sensor_data(self) -> None:
         """Gets the sensor data from the Meteobridge Logger"""
 
-        dataTemplate = "[DD]/[MM]/[YYYY];[hh]:[mm]:[ss];[th0temp-act:0];[thb0seapress-act:0];[th0hum-act:0];[wind0avgwind-act:0];[wind0dir-avg5.0:0];[rain0total-daysum:0];[rain0rate-act:0];[th0dew-act:0];[wind0chill-act:0];[wind0wind-max1:0];[th0lowbat-act.0:0];[thb0temp-act:0];[thb0hum-act.0:0];[th0temp-dmax:0];[th0temp-dmin:0];[wind0wind-act:0];[th0heatindex-act.1:0];[uv0index-act:0];[sol0rad-act:0];[th0temp-mmin.1:0];[th0temp-mmax.1:0];[th0temp-ymin.1:0];[th0temp-ymax.1:0];[wind0wind-mmax.1:0];[wind0wind-ymax.1:0];[rain0total-mmax.1:0];[rain0total-ymax.1:0];[rain0rate-mmax.1:0];[rain0rate-ymax.1:0];[lgt0total-act.0:0];[lgt0energy-act.0:0];[lgt0dist-act.0:0];[air0pm-act.0:0];[wind0wind-act=bft.0:0];[th1temp-act:0];[th1hum-act:0];[th1heatindex-act.1:0];[th2temp-act:0];[th2hum-act:0];[th2heatindex-act.1:0];[th0temp-delta10:0];[thb0seapress-delta10:0];[thb0press-act:0];[forecast-text:]"
+        dataTemplate = "[DD]/[MM]/[YYYY];[hh]:[mm]:[ss];[th0temp-act:0];[thb0seapress-act:0];[th0hum-act:0];[wind0avgwind-act:0];[wind0dir-avg5.0:0];[rain0total-daysum:0];[rain0rate-act:0];[th0dew-act:0];[wind0chill-act:0];[wind0wind-max1:0];[th0lowbat-act.0:0];[thb0temp-act:0];[thb0hum-act.0:0];[th0temp-dmax:0];[th0temp-dmin:0];[wind0wind-act:0];[th0heatindex-act.1:0];[uv0index-act:0];[sol0rad-act:0];[th0temp-mmin.1:0];[th0temp-mmax.1:0];[th0temp-ymin.1:0];[th0temp-ymax.1:0];[wind0wind-mmax.1:0];[wind0wind-ymax.1:0];[rain0total-mmax.1:0];[rain0total-ymax.1:0];[rain0rate-mmax.1:0];[rain0rate-ymax.1:0];[lgt0total-act.0:0];[lgt0energy-act.0:0];[lgt0dist-act.0:0];[air0pm-act.0:0];[wind0wind-act=bft.0:0];[th1temp-act:0];[th1hum-act:0];[th1heatindex-act.1:0];[th2temp-act:0];[th2hum-act:0];[th2heatindex-act.1:0];[th0temp-delta10:0];[thb0seapress-delta10:0];[thb0press-act:0];[th3temp-act:0];[th3hum-act:0];[th3heatindex-act.1:0];[th4temp-act:0];[th4hum-act:0];[th4heatindex-act.1:0];[th5temp-act:0];[th5hum-act:0];[th5heatindex-act.1:0];[th6temp-act:0];[th6hum-act:0];[th6heatindex-act.1:0];[th7temp-act:0];[th7hum-act:0];[th7heatindex-act.1:0];[forecast-text:]"
         endpoint = f"http://{self._user}:{self._pass}@{self._host}/cgi-bin/template.cgi?template={dataTemplate}"
 
         data = await self.async_request("get", endpoint)
@@ -442,7 +442,7 @@ class Meteobridge:
                     "unit": self._unit_pressure,
                     },
                 "forecast": {
-                    "value": values[45],
+                    "value": values[60],
                     "name": "Station forecast",
                     "type": DEVICE_TYPE_SENSOR,
                     "device_class": DEVICE_CLASS_NONE,
@@ -527,6 +527,151 @@ class Meteobridge:
                         "heatindex_3": {
                             "value": await cnv.temperature(float(values[41]), self._unit_temperature),
                             "name": "Heat index 3",
+                            "type": DEVICE_TYPE_SENSOR,
+                            "device_class": DEVICE_CLASS_TEMPERATURE,
+                            "icon": "thermometer",
+                            "unit": self._unit_temperature,
+                            },
+                    }
+                )
+            if self._extra_sensors > 2:
+                sensor_item.update(
+                    {
+                        "temperature_4": {
+                            "value": await cnv.temperature(float(values[45]), self._unit_temperature),
+                            "name": "Temperature 4",
+                            "type": DEVICE_TYPE_SENSOR,
+                            "device_class": DEVICE_CLASS_TEMPERATURE,
+                            "icon": "thermometer",
+                            "unit": self._unit_temperature,
+                            },
+                        "humidity_4": {
+                            "value": values[46],
+                            "name": "Humidity 4",
+                            "type": DEVICE_TYPE_SENSOR,
+                            "device_class": DEVICE_CLASS_HUMIDITY,
+                            "icon": "water-percent",
+                            "unit": "%",
+                            },
+                        "heatindex_4": {
+                            "value": await cnv.temperature(float(values[47]), self._unit_temperature),
+                            "name": "Heat index 4",
+                            "type": DEVICE_TYPE_SENSOR,
+                            "device_class": DEVICE_CLASS_TEMPERATURE,
+                            "icon": "thermometer",
+                            "unit": self._unit_temperature,
+                            },
+                    }
+                )
+            if self._extra_sensors > 3:
+                sensor_item.update(
+                    {
+                        "temperature_5": {
+                            "value": await cnv.temperature(float(values[48]), self._unit_temperature),
+                            "name": "Temperature 5",
+                            "type": DEVICE_TYPE_SENSOR,
+                            "device_class": DEVICE_CLASS_TEMPERATURE,
+                            "icon": "thermometer",
+                            "unit": self._unit_temperature,
+                            },
+                        "humidity_5": {
+                            "value": values[49],
+                            "name": "Humidity 5",
+                            "type": DEVICE_TYPE_SENSOR,
+                            "device_class": DEVICE_CLASS_HUMIDITY,
+                            "icon": "water-percent",
+                            "unit": "%",
+                            },
+                        "heatindex_5": {
+                            "value": await cnv.temperature(float(values[50]), self._unit_temperature),
+                            "name": "Heat index 5",
+                            "type": DEVICE_TYPE_SENSOR,
+                            "device_class": DEVICE_CLASS_TEMPERATURE,
+                            "icon": "thermometer",
+                            "unit": self._unit_temperature,
+                            },
+                    }
+                )
+            if self._extra_sensors > 4:
+                sensor_item.update(
+                    {
+                        "temperature_6": {
+                            "value": await cnv.temperature(float(values[51]), self._unit_temperature),
+                            "name": "Temperature 6",
+                            "type": DEVICE_TYPE_SENSOR,
+                            "device_class": DEVICE_CLASS_TEMPERATURE,
+                            "icon": "thermometer",
+                            "unit": self._unit_temperature,
+                            },
+                        "humidity_6": {
+                            "value": values[52],
+                            "name": "Humidity 6",
+                            "type": DEVICE_TYPE_SENSOR,
+                            "device_class": DEVICE_CLASS_HUMIDITY,
+                            "icon": "water-percent",
+                            "unit": "%",
+                            },
+                        "heatindex_6": {
+                            "value": await cnv.temperature(float(values[53]), self._unit_temperature),
+                            "name": "Heat index 6",
+                            "type": DEVICE_TYPE_SENSOR,
+                            "device_class": DEVICE_CLASS_TEMPERATURE,
+                            "icon": "thermometer",
+                            "unit": self._unit_temperature,
+                            },
+                    }
+                )
+            if self._extra_sensors > 5:
+                sensor_item.update(
+                    {
+                        "temperature_7": {
+                            "value": await cnv.temperature(float(values[54]), self._unit_temperature),
+                            "name": "Temperature 7",
+                            "type": DEVICE_TYPE_SENSOR,
+                            "device_class": DEVICE_CLASS_TEMPERATURE,
+                            "icon": "thermometer",
+                            "unit": self._unit_temperature,
+                            },
+                        "humidity_7": {
+                            "value": values[55],
+                            "name": "Humidity 7",
+                            "type": DEVICE_TYPE_SENSOR,
+                            "device_class": DEVICE_CLASS_HUMIDITY,
+                            "icon": "water-percent",
+                            "unit": "%",
+                            },
+                        "heatindex_7": {
+                            "value": await cnv.temperature(float(values[56]), self._unit_temperature),
+                            "name": "Heat index 7",
+                            "type": DEVICE_TYPE_SENSOR,
+                            "device_class": DEVICE_CLASS_TEMPERATURE,
+                            "icon": "thermometer",
+                            "unit": self._unit_temperature,
+                            },
+                    }
+                )
+            if self._extra_sensors > 6:
+                sensor_item.update(
+                    {
+                        "temperature_8": {
+                            "value": await cnv.temperature(float(values[57]), self._unit_temperature),
+                            "name": "Temperature 8",
+                            "type": DEVICE_TYPE_SENSOR,
+                            "device_class": DEVICE_CLASS_TEMPERATURE,
+                            "icon": "thermometer",
+                            "unit": self._unit_temperature,
+                            },
+                        "humidity_8": {
+                            "value": values[58],
+                            "name": "Humidity 8",
+                            "type": DEVICE_TYPE_SENSOR,
+                            "device_class": DEVICE_CLASS_HUMIDITY,
+                            "icon": "water-percent",
+                            "unit": "%",
+                            },
+                        "heatindex_4": {
+                            "value": await cnv.temperature(float(values[59]), self._unit_temperature),
+                            "name": "Heat index 8",
                             "type": DEVICE_TYPE_SENSOR,
                             "device_class": DEVICE_CLASS_TEMPERATURE,
                             "icon": "thermometer",

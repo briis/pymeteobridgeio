@@ -29,7 +29,7 @@ U_WIND = UNIT_TYPE_WIND_MPH
 U_PRES = UNIT_TYPE_PRESSURE_INHG
 U_DIST = UNIT_TYPE_DIST_MI
 LANGUAGE = "da"
-EXTRA_SENSORS = 2
+EXTRA_SENSORS = 7
 
 async def realtime_data():
     """Return the raw data from a Meteobridge Station."""
